@@ -10,6 +10,8 @@ namespace Divisicus.Web.Models
     public class ApplicationUser : IdentityUser
     {
         public string Hometown { get; set; }
+        public int Level { get; set; }
+        public int HighScore { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {

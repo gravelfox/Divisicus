@@ -1,7 +1,215 @@
 ﻿@section SPAViews {
     @Html.Partial("_Home")
 }
-@section Scripts{
-    @Scripts.Render("~/bundles/knockout")
-    @Scripts.Render("~/bundles/app")
-}
+@model Divisicus.Persistence.Player
+
+@Scripts.Render("~/bundles/knockout")
+@Scripts.Render("~/bundles/jquery")
+
+<style type="text/css">
+    .btn-fixed{
+        width: 40px;
+    }
+
+</style>
+
+
+<div class="container">
+    <div class="row col-md-12">
+        &nbsp;
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <input type="button" value="Begin Salvo" data-bind="click: beginSalvo" style="vertical-align:bottom" class="btn" id="startButton"/><!--@Model.UserId, @Model.Level, @Model.HighScore-->
+        </div>
+        <div class="col-sm-4">
+            <span id="timer" style="font-size: 3em;vertical-align:top;">30.0</span>
+        </div>
+        <div class="col-sm-2">
+            <span id="level" data-bind="text: 'Level: ' + level" style="vertical-align:bottom"></span>
+        </div>
+        <div class="col-sm-2">
+            <span id="highScore" data-bind="text: 'High Score: ' + highScore" style="vertical-align:bottom"></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h1 data-bind="text: target"></h1><br />
+            <h3>Find its two divisors:</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+           
+            <div class="col-sm-1 text-center">
+                <input type="button" class="btn btn-fixed" id="button1" onclick="selectNumber.call(this)" data-bind="value: numbersInPlay()[0]" />
+            </div>
+            <div class="col-sm-1 text-center">
+                <input type="button" class="btn btn-fixed" id="button2" onclick="selectNumber.call(this)" data-bind="value: numbersInPlay()[1]" />
+            </div>
+            <div class="col-sm-1 text-center">
+                <input type="button" class="btn btn-fixed" id="button3" onclick="selectNumber.call(this)" data-bind="value: numbersInPlay()[2]" />
+            </div>
+            <div class="col-sm-1 text-center">
+                <input type="button" class="btn btn-fixed" id="button4" onclick="selectNumber.call(this)" data-bind="value: numbersInPlay()[3]" />
+            </div>
+            <div class="col-sm-1 text-center">
+                <input type="button" class="btn btn-fixed" id="button5" onclick="selectNumber.call(this)" data-bind="value: numbersInPlay()[4]" />
+            </div>
+            <div class="col-sm-1 text-center">
+                <input type="button" class="btn btn-fixed" id="button6" onclick="selectNumber.call(this)" data-bind="value: numbersInPlay()[5]" />
+            </div>
+        </div>
+    </div>
+    &nbsp;
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="col-sm-1 text-center">
+                <input type="button" class="btn btn-fixed" id="button7" onclick="selectNumber.call(this)" data-bind="value: numbersInPlay()[6]" />
+            </div>
+            <div class="col-sm-1 text-center">
+                <input type="button" class="btn btn-fixed" id="button8" onclick="selectNumber.call(this)" data-bind="value: numbersInPlay()[7]" />
+            </div>
+            <div class="col-sm-1 text-center">
+                <input type="button" class="btn btn-fixed" id="button9" onclick="selectNumber.call(this)" data-bind="value: numbersInPlay()[8]" />
+            </div>
+            <div class="col-sm-1 text-center">
+                <input type="button" class="btn btn-fixed" id="button10" onclick="selectNumber.call(this)" data-bind="value: numbersInPlay()[9]" />
+            </div>
+            <div class="col-sm-1 text-center">
+                <input type="button" class="btn btn-fixed" id="button11" onclick="selectNumber.call(this)" data-bind="value: numbersInPlay()[10]" />
+            </div>
+            <div class="col-sm-1 text-center">
+                <input type="button" class="btn btn-fixed" id="button12" onclick="selectNumber.call(this)" data-bind="value: numbersInPlay()[11]" />
+            </div>
+        </div>
+    </div>
+    <p>&nbsp;</p>
+    <h4 data-bind="text: 'Score: ' + score()"></h4>
+</div>
+<script>
+    
+    var viewModel = {
+        target: ko.observable(),
+        level: ko.observable(),
+        selections: ko.observableArray(),
+        score: ko.observable(0),
+        highScore: ko.observable(),
+        numbersInPlay: ko.observableArray()
+    };
+    viewModel.score(0);
+    viewModel.target(" ");
+    viewModel.highScore = @Model.HighScore;
+    viewModel.level = @Model.Level;
+    var countdown;
+    var round = 1;
+    var multiple1;
+    var multiple2;
+    initButtons();
+
+    function initButtons() {
+        var numbers = [2, 3, 4, 5, 6, 7, 8, 9, 11, 13, 17, 19, 21, 23, 27, 29, 31, 33, 37, 39, 41, 43, 47, 49, 51, 53, 57, 59];
+        for (var i = 0; i < 12; i++) {
+            viewModel.numbersInPlay.push(numbers[i + viewModel.level]);
+        }
+    };
+
+    function beginSalvo() {
+        setTarget();
+        startTimer();
+    }
+
+    function setTarget() {
+        multiple1 = viewModel.numbersInPlay()[(Math.floor(Math.random() * 6))];
+        multiple2 = viewModel.numbersInPlay()[(Math.floor(Math.random() * 6)) + 6];
+        viewModel.target(multiple1 * multiple2);
+    };
+
+    function startTimer() {
+        var timer = 30.0;
+        countdown = setInterval(function () {
+            timer -= .1;
+            document.getElementById("timer").innerHTML = (Math.round(timer * 10) / 10).toFixed(1);
+            if (timer <= 0) {
+                clearInterval(countdown);
+                document.getElementById("timer").innerHTML = "0.0";
+            };
+        }, 100);
+    };
+
+    function selectNumber() {
+        if (viewModel.target() == " ") return;
+        $(this).toggleClass('btn-primary');
+        if (viewModel.selections()[0] == this.value) {
+            viewModel.selections.removeAll();
+        } else viewModel.selections.push(this.value);
+        if (viewModel.selections().length == 2) {
+            testSelections();
+        };
+    };
+
+    function testSelections() {
+        var time = document.getElementById("timer").innerHTML;
+        var num1 = viewModel.selections()[0];
+        var num2 = viewModel.selections()[1];
+        if (num1 * num2 == viewModel.target()) {
+            viewModel.score(viewModel.score() + awardPoints(time));
+        }
+        else {
+            alert("Incorrect\nMultiples: " + multiple1 + " & " + multiple2);
+        }
+        viewModel.selections.removeAll();
+        resetButtons();
+        clearInterval(countdown);
+        nextRound();
+    };
+
+    function nextRound() {
+        if (round == 6) {
+            endGame();
+            return;
+        }
+        else round++;
+        startDelay();
+
+    }
+
+    function startDelay() {
+        viewModel.target("Ready...");
+        setTimeout(function () {
+            viewModel.target("Set...");
+        }, 1000);
+        setTimeout(function () {
+            setTarget();
+            startTimer();
+        }, 2000);
+    }
+
+    function endGame() {
+        viewModel.target(" ");
+        var url = "/Home/DebriefGame";
+        var user = "@Model.UserId";
+        var score = viewModel.score;
+        $.post(url, { user: user, score: score }, function (data) {
+            alert(data);
+            location.reload();
+        });
+
+    }
+
+    function resetButtons() {
+        $("input").removeClass("btn-primary");
+    }
+
+    function awardPoints(time) {
+        var score = viewModel.numbersInPlay()[5] * viewModel.numbersInPlay()[11];
+        var multiplier = Math.floor((Math.pow(1.1, time * 1.4) * .11 + 1) * 10) / 10
+        var totalScore = Math.floor(score * multiplier);
+        alert("Level " + viewModel.level + " Score: " + score + "\nTime Multiplier: " + multiplier
+            + "\nTotal Score: " + totalScore);
+        return totalScore;
+    }
+
+    ko.applyBindings(viewModel);
+</script>
+

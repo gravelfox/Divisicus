@@ -11,11 +11,13 @@ namespace Divisicus.Persistence
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Linq;
+
     public partial class Player
     {
         public System.Guid UserId { get; set; }
         public int Level { get; set; }
         public int HighScore { get; set; }
+        public string Alias { get; set; }
     }
 }

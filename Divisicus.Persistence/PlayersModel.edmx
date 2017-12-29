@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="LevelScoreModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="LevelScoreModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Players">
           <Key>
             <PropertyRef Name="UserId" />
@@ -12,12 +12,12 @@
           <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Level" Type="int" Nullable="false" />
           <Property Name="HighScore" Type="int" Nullable="false" />
+          <Property Name="Alias" Type="varchar" MaxLength="20" />
         </EntityType>
         <EntityContainer Name="LevelScoreModelStoreContainer">
           <EntitySet Name="Players" EntityType="Self.Players" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="LevelScoreModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -28,6 +28,7 @@
           <Property Name="UserId" Type="Guid" Nullable="false" />
           <Property Name="Level" Type="Int32" Nullable="false" />
           <Property Name="HighScore" Type="Int32" Nullable="false" />
+          <Property Name="Alias" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityContainer Name="LevelScoreEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Players" EntityType="Self.Player" />
@@ -41,6 +42,7 @@
           <EntitySetMapping Name="Players">
             <EntityTypeMapping TypeName="LevelScoreModel.Player">
               <MappingFragment StoreEntitySet="Players">
+                <ScalarProperty Name="Alias" ColumnName="Alias" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Level" ColumnName="Level" />
                 <ScalarProperty Name="HighScore" ColumnName="HighScore" />

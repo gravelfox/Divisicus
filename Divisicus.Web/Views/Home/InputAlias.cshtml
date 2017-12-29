@@ -1,0 +1,23 @@
+﻿@section SPAViews {
+    @Html.Partial("_Home")
+}
+@{
+    ViewBag.Title = "Divisicus";
+}
+@model Divisicus.Persistence.Player
+
+<h2>Please enter an alias</h2>
+<h4>This will be used on the global high scores page.</h4>
+<input id="alias" type="text"/><br />
+<input type="button" class="btn" value="Submit" onclick="submitAlias()" style="margin-top: 10px;"/>
+<script>
+    function submitAlias() {
+        var url = "/Home/InputAlias";
+        var user = "@Model.UserId";
+        var alias = document.getElementById("alias").value;
+        $.post(url, { user: user, alias: alias }, function (data) {
+        alert(data);
+        window.location.href = "Index";
+        });
+    }
+</script>

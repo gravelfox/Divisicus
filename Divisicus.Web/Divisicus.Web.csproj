@@ -327,9 +327,11 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <None Include="Properties\PublishProfiles\Divisicus - FTP %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\Divisicus - FTP %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\Divisicus - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\Divisicus - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\Divisicus - Web Deploy %283%29.pubxml" />
+    <None Include="Properties\PublishProfiles\Divisicus - Web Deploy %284%29.pubxml" />
     <None Include="Properties\PublishProfiles\Divisicus - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.2.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.2.1.js" />
@@ -392,6 +394,7 @@
     </Content>
     <Content Include="Service References\Application Insights\ConnectedService.json" />
     <Content Include="Scripts\knockout.validation.min.js.map" />
+    <Content Include="Views\Home\InputAlias.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Divisicus.Persistence\Divisicus.Persistence.csproj">

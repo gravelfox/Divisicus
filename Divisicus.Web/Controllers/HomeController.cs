@@ -14,18 +14,40 @@ namespace Divisicus.Web.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.title = "Divisicus";
             Guid userId;
             if(!Guid.TryParse(User.Identity.GetUserId(), out userId))
             {
                 throw new Exception("User Id not Valid.");
             }
-            //ViewBag.user = user;
             var player = getUserInfo(userId);
             if(player == null){
                 player = createNewPlayer(userId);
             }
+            if (player.Alias == null) return RedirectToAction("InputAlias");
             return View(player);
+        }
+
+        public ActionResult InputAlias()
+        {
+            Guid userId;
+            if (!Guid.TryParse(User.Identity.GetUserId(), out userId))
+            {
+                throw new Exception("User Id not Valid.");
+            }
+            var player = getUserInfo(userId);
+            return View(player);
+        }
+
+        [HttpPost]
+        public string InputAlias(string user, string alias)
+        {
+            Guid guid;
+            if (!Guid.TryParse(user, out guid)) throw new Exception("User Id not Valid.");
+            var db = new LevelScoreEntities();
+            db.Players.FirstOrDefault(p => p.UserId == guid).Alias = alias;
+            db.SaveChanges();
+            string output = "Thanks " + alias + "!\nEnjoy Divisicus!";
+            return output;
         }
 
         [HttpPost]

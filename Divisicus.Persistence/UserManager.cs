@@ -13,7 +13,10 @@ namespace Divisicus.Persistence
             if (!Guid.TryParse(userId, out guid)) throw new Exception("User Id not Valid.");
             var db = new LevelScoreEntities();
             var player = db.Players.FirstOrDefault(p => p.UserId == guid);
-            return player.Alias.ToString();
+            if (player.Alias != null) return player.Alias.ToString();
+            else return "";
+            
+            
         }
     }
 }

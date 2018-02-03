@@ -61,6 +61,7 @@ namespace Divisicus.Web.Controllers
                 : message == ManageMessageId.Error ? "An error has occurred."
                 : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
                 : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
+                : message == ManageMessageId.ChangeAliasSuccess ? "Your alias has been changed."
                 : "";
 
             var userId = User.Identity.GetUserId();
@@ -333,6 +334,27 @@ namespace Divisicus.Web.Controllers
             base.Dispose(disposing);
         }
 
+        // GET: /Manage/ChangeAlias
+        public ActionResult ChangeAlias()
+        {
+            return View();
+        }
+
+        //
+        // POST: /Manage/ChangeAlias
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangeAlias(NewAliasViewModel model)
+        {
+            //if (model.NewAlias.Length == 0 || model.NewAlias.Length > 20 || model.NewAlias == null) return View(model);
+            var result = Persistence.UserManager.ChangeAlias(User.Identity.GetUserId(), model.NewAlias);
+            if (result)
+            {
+                return RedirectToAction("Index", new { Message = ManageMessageId.ChangeAliasSuccess });
+            }
+            return View(model);
+        }
+
         #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
@@ -381,6 +403,7 @@ namespace Divisicus.Web.Controllers
             SetPasswordSuccess,
             RemoveLoginSuccess,
             RemovePhoneSuccess,
+            ChangeAliasSuccess,
             Error
         }
 

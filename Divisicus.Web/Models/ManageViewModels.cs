@@ -58,6 +58,14 @@ namespace Divisicus.Web.Models
         public string ConfirmPassword { get; set; }
     }
 
+    public class NewAliasViewModel
+    {
+        [Required(ErrorMessage = "An alias is required")]
+        [StringLength(20, ErrorMessage = "The alias must be between 6 and 20 characters.", MinimumLength = 6)]
+        [Display(Name = "New Alias")]
+        public string NewAlias { get; set; }
+    }
+
     public class AddPhoneNumberViewModel
     {
         [Required]

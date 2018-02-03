@@ -1,14 +1,15 @@
 ﻿@using Microsoft.AspNet.Identity
 @if (Request.IsAuthenticated)
 {
-    //var alias = Divisicus.Persistence.UserManager.getPlayerAlias(User.Identity.GetUserId());
+    var alias = Divisicus.Persistence.UserManager.getPlayerAlias(User.Identity.GetUserId());
+    if (alias == "") { alias = User.Identity.GetUserName(); }
     using (Html.BeginForm("LogOff", "Account", new { area = "" }, FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
     {
-    @Html.AntiForgeryToken()
+                    @Html.AntiForgeryToken()
 
-    <ul class="nav navbar-nav navbar-right">
+                    <ul class="nav navbar-nav navbar-right">
         <li>
-            @Html.ActionLink("Hello " + Divisicus.Persistence.UserManager.getPlayerAlias(User.Identity.GetUserId()) + "!", "Index", "Manage", routeValues: new { area = "" }, htmlAttributes: new { title = "Manage" })
+            @Html.ActionLink("Hello " + alias + "!", "Index", "Manage", routeValues: new { area = "" }, htmlAttributes: new { title = "Manage" })
         </li>
         <li><a href="javascript:sessionStorage.removeItem('accessToken');$('#logoutForm').submit();">Log off</a></li>
     </ul>

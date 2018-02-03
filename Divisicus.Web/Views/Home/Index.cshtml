@@ -162,6 +162,7 @@
             return;
         }
         else round++;
+        blurButtons();
         startDelay();
 
     }
@@ -175,6 +176,11 @@
             setTarget();
             startTimer();
         }, 2000);
+    }
+
+    function blurButtons() {
+        //removes the focus (and thus the styling) between rounds
+        $('.btn-fixed').each(function(){this.blur()});
     }
 
     function endGame() {

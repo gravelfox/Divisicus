@@ -39,7 +39,10 @@
         @RenderSection("SPAViews", required: false)
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - Divisicus</p>
+            @{string highScore = Divisicus.Persistence.ScoreManager.GetHighScore(); }
+            &nbsp;<br/>
+            <p>All-Time High Score: @highScore<br />
+            &copy; @DateTime.Now.Year - Divisicus</p>
         </footer>
     </div>
 

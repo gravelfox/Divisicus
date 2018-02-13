@@ -12,8 +12,8 @@ namespace Divisicus.Persistence
         {
             var db = new LevelScoreEntities();
             int highScore = db.Players.Max(p => p.HighScore);
-            Player champ = db.Players.FirstOrDefault(p => p.HighScore == highScore);
-            return highScore.ToString() + " - " + champ.Alias;
+            string champ = db.Players.FirstOrDefault(p => p.HighScore == highScore).Alias;
+            return highScore.ToString() + " - " + champ;
         }
     }
 }

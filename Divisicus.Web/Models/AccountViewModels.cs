@@ -87,6 +87,11 @@ namespace Divisicus.Web.Models
 
         [Display(Name = "Hometown")]
         public string Hometown { get; set; }
+
+        [Required]
+        [Display(Name = "Alias")]
+        [StringLength(20, ErrorMessage = "The alias must be 6 to 20 characters.", MinimumLength = 6)]
+        public string Alias { get; set; }
     }
 
     public class ResetPasswordViewModel

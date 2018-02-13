@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Divisicus.Web.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Divisicus.Persistence;
 
 namespace Divisicus.Web.Controllers
 {
@@ -166,6 +167,11 @@ namespace Divisicus.Web.Controllers
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Hometown = model.Hometown };
                 var result = await UserManager.CreateAsync(user, model.Password);
+                    //add player to LevelScore table.
+                Guid guid;
+                if (!Guid.TryParse(user.Id, out guid)) throw new Exception("User Id not Valid.");
+                addPlayer(guid, model.Alias);
+
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
@@ -183,6 +189,18 @@ namespace Divisicus.Web.Controllers
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        private void addPlayer(Guid guid, string alias)
+        { 
+            var db = new LevelScoreEntities();
+            Player player = new Player();
+            player.UserId = guid;
+            player.Level = 0;
+            player.HighScore = 0;
+            player.Alias = alias;
+            db.Players.Add(player);
+            db.SaveChanges();
         }
 
         //
